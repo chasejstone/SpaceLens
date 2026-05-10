@@ -66,9 +66,9 @@ In both tests, the `os.scandir`‑based scanner outperformed the baseline by rou
 
 Below are bar charts illustrating the timing differences for each dataset.
 
-![2k files performance]({{file:file-KuuzWZN8isByg2a21x8csP}})
+![2k files performance](assets/2k_files_performance.png)
 
-![40k files performance]({{file:file-Dxqxfjobp3KfCznpxWZCSD}})
+![40k files performance](assets/40k_files_performance.png)
 
 ## Conclusion
 

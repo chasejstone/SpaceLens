@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+*.spec
+
+# PyInstaller
+*.manifest
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# SpaceLens runtime artifacts
+.spacelens_sota/
+*.sqlite3
+*.sqlite3-journal
+
+# Test / benchmark outputs
+*.log
+benchmark_results.*
+
+# OS junk
+desktop.ini
