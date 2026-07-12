@@ -69,6 +69,12 @@ The cache helps order repeat scans but does not replace a new scan. Permission e
 
 SpaceLens does not read the NTFS Master File Table or USN Change Journal. Its default scanner works without administrator access and is portable across operating systems.
 
+## Tests
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
