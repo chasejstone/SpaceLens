@@ -119,6 +119,22 @@ class CleanupSuggestion:
     kind: str
 
 
+def unique_cleanup_suggestions(
+    suggestions: Iterable[CleanupSuggestion], limit: int = MAX_CLEANUP_ROWS
+) -> List[CleanupSuggestion]:
+    """Return the largest suggestion for each path without double counting it."""
+    unique: List[CleanupSuggestion] = []
+    seen: set[str] = set()
+    for suggestion in sorted(suggestions, key=lambda item: item.size, reverse=True):
+        if suggestion.path in seen:
+            continue
+        seen.add(suggestion.path)
+        unique.append(suggestion)
+        if len(unique) >= limit:
+            break
+    return unique
+
+
 class Scanner:
     """Fast disk scanner using SpaceLens' custom Hot-Zone Sprint method.
 
@@ -1675,13 +1691,8 @@ class SpaceLensApp(tk.Tk):
         self.cleanup_by_iid.clear()
         if not self.root_node:
             return
-        suggestions = self._build_cleanup_suggestions()
-        suggestions.sort(key=lambda s: s.size, reverse=True)
-        seen: set[str] = set()
-        for sug in suggestions[:MAX_CLEANUP_ROWS]:
-            if sug.path in seen:
-                continue
-            seen.add(sug.path)
+        suggestions = unique_cleanup_suggestions(self._build_cleanup_suggestions())
+        for sug in suggestions:
             iid = self.cleanup_tree.insert("", tk.END, values=(sug.reason, format_size(sug.size), f"{age_days(sug.modified):,} days", format_time(sug.modified), sug.path))
             self.cleanup_by_iid[iid] = sug
             self.path_by_iid[iid] = sug.path
@@ -1719,7 +1730,11 @@ class SpaceLensApp(tk.Tk):
         elapsed = max(time.time() - stats.start_time, 0.01)
         largest_child = max(root.children, key=lambda n: n.size, default=None)
         duplicate_candidates = self._count_duplicate_candidate_groups()
-        cleanup_total = sum(s.size for s in self._build_cleanup_suggestions()[:MAX_CLEANUP_ROWS]) if self.all_files else 0
+        cleanup_total = (
+            sum(s.size for s in unique_cleanup_suggestions(self._build_cleanup_suggestions()))
+            if self.all_files
+            else 0
+        )
         lines = [
             f"{APP_NAME} {APP_VERSION} scan summary",
             "",
