@@ -57,6 +57,7 @@ Run `build_exe_optional.bat` to build an executable with PyInstaller. The output
 ├── benchmark_spacelens_sota.py
 ├── run_spacelens_sota.bat
 ├── build_exe_optional.bat
+├── requirements-build.txt
 └── docs/
     ├── Research_Report.md
     ├── RELEASE_NOTES_v3.0.txt
